@@ -1,8 +1,8 @@
 ﻿// ============================================================
 //  TELEGRAM BOT CONFIG  ← fill in your values here
 // ============================================================
-const TG_BOT_TOKEN = 'YOUR_BOT_TOKEN';   // from @BotFather
-const TG_CHAT_ID   = 'YOUR_CHAT_ID';     // your personal chat ID
+const TG_BOT_TOKEN = '8832194004:AAFA5D8jBpwNbxfOTCR70Lzb74uczrD6Jco';   // from @BotFather
+const TG_CHAT_ID   = '1776805886';     // your personal chat ID
 // ============================================================
 
 // ====== NAVBAR SCROLL ======
@@ -180,3 +180,4 @@ const statsObserver = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.5 });
 stats.forEach(s => statsObserver.observe(s));
+
