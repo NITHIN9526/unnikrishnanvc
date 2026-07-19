@@ -4,10 +4,6 @@
 const PROXY_URL = 'https://script.google.com/macros/s/AKfycbzwefyc7Ov56ic95UjeL5mah8nbXYM7znG7Fufmz1Z1qFa4CbGPp3PNi1g9U3adoFaWbA/exec';
 // ============================================================
 
-const TG_BOT_TOKEN = '8832194004:AAFA5D8jBpwNbxfOTCR70Lzb74uczrD6Jco';   // from @BotFather
-const TG_CHAT_ID   = '1776805886';     // your personal chat ID
-// ============================================================
-
 // ====== NAVBAR SCROLL ======
 const navbar = document.getElementById('navbar');
 window.addEventListener('scroll', () => {
@@ -102,15 +98,6 @@ async function sendToTelegram(text) {
     })
   });
   if (!res.ok) throw new Error('Proxy error: ' + res.status);
-  return res.json();
-},
-    body: JSON.stringify({
-      chat_id:    TG_CHAT_ID,
-      text:       text,
-      parse_mode: 'Markdown'
-    })
-  });
-  if (!res.ok) throw new Error('Telegram API error: ' + res.status);
   return res.json();
 }
 
