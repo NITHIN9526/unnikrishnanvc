@@ -1,6 +1,9 @@
 ﻿// ============================================================
-//  TELEGRAM BOT CONFIG  ← fill in your values here
+//  PROXY URL — paste your Google Apps Script Web App URL below
 // ============================================================
+const PROXY_URL = 'YOUR_APPS_SCRIPT_WEB_APP_URL';
+// ============================================================
+
 const TG_BOT_TOKEN = '8832194004:AAFA5D8jBpwNbxfOTCR70Lzb74uczrD6Jco';   // from @BotFather
 const TG_CHAT_ID   = '1776805886';     // your personal chat ID
 // ============================================================
@@ -86,10 +89,21 @@ function buildTelegramMessage(data) {
 }
 
 async function sendToTelegram(text) {
-  const url = 'https://api.telegram.org/bot' + TG_BOT_TOKEN + '/sendMessage';
-  const res = await fetch(url, {
+  const res = await fetch(PROXY_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name:     document.getElementById('name').value.trim(),
+      phone:    document.getElementById('phone').value.trim(),
+      service:  document.getElementById('service').value,
+      location: document.getElementById('location').value.trim(),
+      date:     document.getElementById('prefdate')?.value || '',
+      message:  document.getElementById('message').value.trim()
+    })
+  });
+  if (!res.ok) throw new Error('Proxy error: ' + res.status);
+  return res.json();
+},
     body: JSON.stringify({
       chat_id:    TG_CHAT_ID,
       text:       text,
@@ -180,4 +194,6 @@ const statsObserver = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.5 });
 stats.forEach(s => statsObserver.observe(s));
+
+
 
