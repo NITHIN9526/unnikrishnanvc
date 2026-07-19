@@ -807,3 +807,9 @@ body {
   .btn-primary, .btn-secondary { justify-content: center; }
   .hero-stats { gap: 20px; }
 }
+
+/* ============================
+   GOOGLE FORM EXTRAS
+   ============================ */
+.req { color: #ef4444; font-size: 0.85em; }
+.form-group input[type="date"] { cursor: pointer; }

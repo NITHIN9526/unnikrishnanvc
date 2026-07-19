@@ -37,45 +37,54 @@ revealTargets.forEach((el, i) => {
   revealObserver.observe(el);
 });
 
-// ====== CONTACT FORM (WhatsApp redirect) ======
+// ====== CONTACT FORM (Google Forms submission) ======
 const contactForm = document.getElementById('contactForm');
 const formSuccess = document.getElementById('formSuccess');
 
-contactForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const name = document.getElementById('name').value.trim();
-  const phone = document.getElementById('phone').value.trim();
-  const service = document.getElementById('service').value;
-  const location = document.getElementById('location').value.trim();
-  const message = document.getElementById('message').value.trim();
+// Split date into year/month/day for Google Forms
+function populateDateFields() {
+  const dateInput = document.getElementById('prefdate');
+  if (!dateInput || !dateInput.value) return;
+  const [year, month, day] = dateInput.value.split('-');
+  document.getElementById('date_year').value = year || '';
+  document.getElementById('date_month').value = parseInt(month, 10) || '';
+  document.getElementById('date_day').value = parseInt(day, 10) || '';
+}
 
-  if (!name || !phone || !service || !location) {
-    alert('Please fill in all required fields.');
-    return;
-  }
+if (contactForm) {
+  contactForm.addEventListener('submit', (e) => {
+    const name = document.getElementById('name').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const service = document.getElementById('service').value;
+    const location = document.getElementById('location').value.trim();
 
-  const serviceLabels = {
-    plucking: 'Coconut Fruit Plucking',
-    repair: 'Coconut Tree Repair & Care',
-    estate: 'Farm & Estate Service',
-    other: 'Other'
-  };
+    if (!name || !phone || !service || !location) {
+      e.preventDefault();
+      // Highlight empty required fields
+      [{ id: 'name', val: name }, { id: 'phone', val: phone },
+       { id: 'service', val: service }, { id: 'location', val: location }].forEach(({ id, val }) => {
+        const el = document.getElementById(id);
+        if (!val) el.style.borderColor = '#ef4444';
+        else el.style.borderColor = '';
+      });
+      return;
+    }
 
-  const waText = encodeURIComponent(
-    `Hello Unnikrishnan V C! I want to book your services.\n\n` +
-    `Name: ${name}\nPhone: ${phone}\nService: ${serviceLabels[service]}\nLocation: ${location}` +
-    (message ? `\nDetails: ${message}` : '')
-  );
+    // Populate Google Forms date hidden fields before submit
+    populateDateFields();
 
-  // Show success
-  contactForm.style.display = 'none';
-  formSuccess.style.display = 'block';
+    // Show success state after a short delay (form submits into hidden iframe)
+    setTimeout(() => {
+      contactForm.style.display = 'none';
+      formSuccess.style.display = 'block';
+    }, 600);
+  });
 
-  // Open WhatsApp after short delay
-  setTimeout(() => {
-    window.open('https://wa.me/919526000000?text=' + waText, '_blank');
-  }, 800);
-});
+  // Clear red borders on input
+  contactForm.querySelectorAll('input, select, textarea').forEach(el => {
+    el.addEventListener('input', () => { el.style.borderColor = ''; });
+  });
+}
 
 // ====== SMOOTH ACTIVE LINK HIGHLIGHTING ======
 const sections = document.querySelectorAll('section[id]');
@@ -116,3 +125,4 @@ const statsObserver = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.5 });
 stats.forEach(s => statsObserver.observe(s));
+
