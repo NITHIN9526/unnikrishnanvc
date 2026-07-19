@@ -1,10 +1,4 @@
-﻿// ============================================================
-//  PROXY URL — paste your Google Apps Script Web App URL below
-// ============================================================
-const PROXY_URL = 'https://script.google.com/macros/s/AKfycbzwefyc7Ov56ic95UjeL5mah8nbXYM7znG7Fufmz1Z1qFa4CbGPp3PNi1g9U3adoFaWbA/exec';
-// ============================================================
-
-// ====== NAVBAR SCROLL ======
+﻿// ====== NAVBAR SCROLL ======
 const navbar = document.getElementById('navbar');
 window.addEventListener('scroll', () => {
   if (window.scrollY > 50) navbar.classList.add('scrolled');
@@ -45,103 +39,37 @@ revealTargets.forEach((el, i) => {
   revealObserver.observe(el);
 });
 
-// ====== CONTACT FORM → TELEGRAM BOT ======
+// ====== CONTACT FORM (Google Forms submission) ======
 const contactForm = document.getElementById('contactForm');
 const formSuccess = document.getElementById('formSuccess');
-const submitBtn   = document.getElementById('submit-btn');
-
-function validateForm() {
-  const fields = [
-    { id: 'name',     label: 'Your Name' },
-    { id: 'phone',    label: 'Phone Number' },
-    { id: 'service',  label: 'Service Required' },
-    { id: 'location', label: 'Your Location' }
-  ];
-  let valid = true;
-  fields.forEach(({ id }) => {
-    const el = document.getElementById(id);
-    if (!el.value.trim()) {
-      el.style.borderColor = '#ef4444';
-      el.style.boxShadow   = '0 0 0 3px rgba(239,68,68,0.15)';
-      valid = false;
-    }
-  });
-  return valid;
-}
-
-function buildTelegramMessage(data) {
-  const { name, phone, service, location, date, message } = data;
-  const now = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
-  return (
-    '🌴 *New Booking Request – Unnikrishnan V C*\n\n' +
-    '👤 *Name:* ' + name + '\n' +
-    '📞 *Phone:* ' + phone + '\n' +
-    '🛠 *Service:* ' + service + '\n' +
-    '📍 *Location:* ' + location + '\n' +
-    (date    ? '📅 *Preferred Date:* ' + date    + '\n' : '') +
-    (message ? '📝 *Details:* '       + message + '\n' : '') +
-    '\n⏰ Submitted: ' + now
-  );
-}
-
-async function sendToTelegram(text) {
-  const res = await fetch(PROXY_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      name:     document.getElementById('name').value.trim(),
-      phone:    document.getElementById('phone').value.trim(),
-      service:  document.getElementById('service').value,
-      location: document.getElementById('location').value.trim(),
-      date:     document.getElementById('prefdate')?.value || '',
-      message:  document.getElementById('message').value.trim()
-    })
-  });
-  if (!res.ok) throw new Error('Proxy error: ' + res.status);
-  return res.json();
-}
 
 if (contactForm) {
-  // Clear red borders on user input
-  contactForm.querySelectorAll('input, select, textarea').forEach(el => {
-    el.addEventListener('input', () => {
-      el.style.borderColor = '';
-      el.style.boxShadow   = '';
-    });
-  });
-
-  contactForm.addEventListener('submit', async (e) => {
+  contactForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    if (!validateForm()) return;
+    const name = document.getElementById('name').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const service = document.getElementById('service').value;
+    const location = document.getElementById('location').value.trim();
 
-    // Disable button & show loading state
-    submitBtn.disabled     = true;
-    submitBtn.textContent  = 'Sending...';
-    submitBtn.style.opacity = '0.75';
-
-    const formData = {
-      name:    document.getElementById('name').value.trim(),
-      phone:   document.getElementById('phone').value.trim(),
-      service: document.getElementById('service').value,
-      location:document.getElementById('location').value.trim(),
-      date:    document.getElementById('prefdate')?.value || '',
-      message: document.getElementById('message').value.trim()
-    };
-
-    try {
-      await sendToTelegram(formData);
-      // Success
-      contactForm.style.display = 'none';
-      formSuccess.style.display = 'block';
-    } catch (err) {
-      // Error — re-enable button and alert
-      submitBtn.disabled     = false;
-      submitBtn.textContent  = 'Send Booking Request';
-      submitBtn.style.opacity = '1';
-      console.error(err);
-      alert('Could not send your request. Please call directly or try again.');
+    if (!name || !phone || !service || !location) {
+      [{ id: 'name', val: name }, { id: 'phone', val: phone },
+       { id: 'service', val: service }, { id: 'location', val: location }].forEach(({ id, val }) => {
+        const el = document.getElementById(id);
+        if (!val) el.style.borderColor = '#ef4444';
+        else el.style.borderColor = '';
+      });
+      return;
     }
+
+    contactForm.submit();
+
+    contactForm.style.display = 'none';
+    formSuccess.style.display = 'block';
+  });
+
+  contactForm.querySelectorAll('input, select, textarea').forEach(el => {
+    el.addEventListener('input', () => { el.style.borderColor = ''; });
   });
 }
 
