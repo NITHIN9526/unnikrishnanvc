@@ -130,7 +130,7 @@ if (contactForm) {
     };
 
     try {
-      await sendToTelegram(buildTelegramMessage(formData));
+      await sendToTelegram(formData);
       // Success
       contactForm.style.display = 'none';
       formSuccess.style.display = 'block';
@@ -181,6 +181,8 @@ const statsObserver = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.5 });
 stats.forEach(s => statsObserver.observe(s));
+
+
 
 
 
