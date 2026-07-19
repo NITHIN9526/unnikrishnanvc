@@ -41,26 +41,16 @@ revealTargets.forEach((el, i) => {
 const contactForm = document.getElementById('contactForm');
 const formSuccess = document.getElementById('formSuccess');
 
-// Split date into year/month/day for Google Forms
-function populateDateFields() {
-  const dateInput = document.getElementById('prefdate');
-  if (!dateInput || !dateInput.value) return;
-  const [year, month, day] = dateInput.value.split('-');
-  document.getElementById('date_year').value = year || '';
-  document.getElementById('date_month').value = parseInt(month, 10) || '';
-  document.getElementById('date_day').value = parseInt(day, 10) || '';
-}
-
 if (contactForm) {
   contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
     const name = document.getElementById('name').value.trim();
     const phone = document.getElementById('phone').value.trim();
     const service = document.getElementById('service').value;
     const location = document.getElementById('location').value.trim();
 
     if (!name || !phone || !service || !location) {
-      e.preventDefault();
-      // Highlight empty required fields
       [{ id: 'name', val: name }, { id: 'phone', val: phone },
        { id: 'service', val: service }, { id: 'location', val: location }].forEach(({ id, val }) => {
         const el = document.getElementById(id);
@@ -70,17 +60,12 @@ if (contactForm) {
       return;
     }
 
-    // Populate Google Forms date hidden fields before submit
-    populateDateFields();
+    contactForm.submit();
 
-    // Show success state after a short delay (form submits into hidden iframe)
-    setTimeout(() => {
-      contactForm.style.display = 'none';
-      formSuccess.style.display = 'block';
-    }, 600);
+    contactForm.style.display = 'none';
+    formSuccess.style.display = 'block';
   });
 
-  // Clear red borders on input
   contactForm.querySelectorAll('input, select, textarea').forEach(el => {
     el.addEventListener('input', () => { el.style.borderColor = ''; });
   });
