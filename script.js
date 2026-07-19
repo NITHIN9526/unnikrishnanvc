@@ -1,7 +1,7 @@
 ﻿// ============================================================
 //  PROXY URL — paste your Google Apps Script Web App URL below
 // ============================================================
-const PROXY_URL = 'YOUR_APPS_SCRIPT_WEB_APP_URL';
+const PROXY_URL = 'https://script.google.com/macros/s/AKfycbzwefyc7Ov56ic95UjeL5mah8nbXYM7znG7Fufmz1Z1qFa4CbGPp3PNi1g9U3adoFaWbA/exec';
 // ============================================================
 
 const TG_BOT_TOKEN = '8832194004:AAFA5D8jBpwNbxfOTCR70Lzb74uczrD6Jco';   // from @BotFather
@@ -194,6 +194,7 @@ const statsObserver = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.5 });
 stats.forEach(s => statsObserver.observe(s));
+
 
 
 
