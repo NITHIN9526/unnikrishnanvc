@@ -45,6 +45,47 @@ body {
   color: var(--gray-800);
   line-height: 1.6;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+}
+
+body.menu-open {
+  overflow: hidden;
+}
+
+button, input, select, textarea, a {
+  touch-action: manipulation;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+section {
+  scroll-margin-top: 100px;
+}
+
+.nav-link:focus-visible,
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.contact-card:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(16,185,129,0.55);
+  outline-offset: 3px;
 }
 
 /* ============================
@@ -198,6 +239,11 @@ body {
   border-radius: 100px;
   transition: var(--transition);
 }
+.nav-link:focus-visible,
+.nav-link:hover {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(16,185,129,0.15);
+}
 .nav-link:hover { color: var(--white); background: rgba(255,255,255,0.1); }
 .nav-link.hire-btn {
   background: var(--amber-400);
@@ -205,6 +251,10 @@ body {
   font-weight: 700;
 }
 .nav-link.hire-btn:hover { background: var(--amber-300); transform: translateY(-1px); }
+.nav-link.active-link {
+  background: rgba(255,255,255,0.16);
+  color: var(--white);
+}
 
 .hamburger {
   display: none;
@@ -222,6 +272,15 @@ body {
   background: var(--white);
   border-radius: 2px;
   transition: var(--transition);
+}
+.hamburger.active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
 }
 
 /* ============================
@@ -337,6 +396,9 @@ body {
   gap: 16px;
   flex-wrap: wrap;
   margin-bottom: 48px;
+}
+.hero-cta a {
+  min-width: 170px;
 }
 .hero-stats {
   display: flex;
@@ -790,22 +852,42 @@ body {
 }
 
 @media (max-width: 768px) {
-  .nav-links { display: none; flex-direction: column; position: fixed; top: 0; right: 0; bottom: 0; width: 72vw; max-width: 320px; background: var(--green-900); padding: 80px 32px 32px; gap: 8px; z-index: 999; transition: transform 0.35s ease; transform: translateX(100%); }
+  .container { padding: 0 18px; }
+  .nav-container { padding: 0 18px; }
+  .nav-links { display: none; flex-direction: column; position: fixed; top: 0; right: 0; bottom: 0; width: 82vw; max-width: 320px; background: linear-gradient(180deg, var(--green-900) 0%, var(--green-800) 100%); padding: 88px 24px 32px; gap: 8px; z-index: 999; transition: transform 0.35s ease; transform: translateX(100%); box-shadow: -12px 0 36px rgba(0,0,0,0.25); overflow-y: auto; }
   .nav-links.open { display: flex; transform: translateX(0); }
+  .nav-link { width: 100%; padding: 14px 16px; border-radius: 14px; }
   .hamburger { display: flex; z-index: 1000; }
+  .hero-content { padding: 110px 18px 72px; max-width: 100%; }
+  .hero-title { font-size: clamp(2rem, 7vw, 2.8rem); }
+  .hero-subtitle { font-size: 1rem; max-width: 100%; }
+  .hero-name-card { width: 100%; max-width: 320px; padding: 12px 14px; }
+  .hero-cta { flex-direction: column; align-items: stretch; }
+  .btn-primary, .btn-secondary { justify-content: center; width: 100%; }
+  .hero-stats { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .stat-divider { display: none; }
   .services-grid, .why-grid { grid-template-columns: 1fr; }
   .service-card--featured { transform: none; }
   .process-steps { flex-direction: column; }
   .step-arrow { transform: rotate(90deg); }
   .contact-form-wrap { padding: 32px 24px; }
+  .contact-card { align-items: flex-start; }
   .footer-top { flex-direction: column; align-items: flex-start; }
-  .hero-content { padding-left: 24px; }
+  .footer-links, .footer-social { width: 100%; }
+  .footer-social { flex-wrap: wrap; }
+  .about-img { height: 280px; }
+  .hero-scroll-hint { bottom: 22px; }
+  .contact-form-wrap { padding: 28px 20px; }
+  .footer-top { padding: 0 0 0 0; }
 }
-
 @media (max-width: 480px) {
   .hero-cta { flex-direction: column; }
   .btn-primary, .btn-secondary { justify-content: center; }
   .hero-stats { gap: 20px; }
+  .section-title { font-size: clamp(1.7rem, 7vw, 2.2rem); }
+  .service-card, .step, .contact-form-wrap { padding: 24px 18px; }
+  .contact-card { padding: 16px 18px; }
+  .footer-bottom { font-size: 0.78rem; }
 }
 
 /* ============================
